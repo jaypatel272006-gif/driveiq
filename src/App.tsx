@@ -8,6 +8,7 @@ import { CommandMenu } from './components/layout/CommandMenu';
 import { AIAdvisorDrawer } from './components/layout/AIAdvisorDrawer';
 import { TestDriveModal } from './components/layout/TestDriveModal';
 import { ToastContainer } from './components/ui/ToastContainer';
+import { InitialLoader } from './components/ui/InitialLoader';
 
 import { ModelDetailPage } from './pages/ModelDetailPage';
 import { VariantDetailPage } from './pages/VariantDetailPage';
@@ -32,6 +33,7 @@ import { NotFoundPage } from './pages/NotFoundPage';
 export function App() {
   return (
     <AppProvider>
+      <InitialLoader />
       <Router>
         <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 font-sans selection:bg-cyan-500 selection:text-slate-950">
           <Navbar />
