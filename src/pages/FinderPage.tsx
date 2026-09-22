@@ -5,6 +5,7 @@ import { rankVehicles } from '../services/recommendationEngine';
 import { UserProfile, FuelType, TransmissionType, BootRequirement, PriorityCategory, Vehicle } from '../types/car';
 import { RecommendationCard } from '../components/finder/RecommendationCard';
 import { WhyThisCarModal } from '../components/finder/WhyThisCarModal';
+import { SkeletonCard } from '../components/ui/SkeletonCard';
 import {
   Sliders,
   DollarSign,
@@ -16,10 +17,9 @@ import {
   ArrowRight,
   ArrowLeft,
   Sparkles,
-  RefreshCw,
-  Check
+  RefreshCw
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 export const FinderPage: React.FC = () => {
   const { userProfile, updateProfile } = useApp();
@@ -87,7 +87,7 @@ export const FinderPage: React.FC = () => {
       setIsAnalyzing(false);
       setShowResults(true);
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 800);
+    }, 700);
   };
 
   // Ranked Results
@@ -99,26 +99,26 @@ export const FinderPage: React.FC = () => {
       
       {/* Header */}
       <div className="text-center space-y-3 max-w-3xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-mono uppercase tracking-wider">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-tech-mono uppercase tracking-wider">
           <Sparkles className="w-3.5 h-3.5" />
           DriveIQ Multi-Factor Matching Engine
         </div>
-        <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
-          Find Your <span className="gradient-text-cyan">Perfect Vehicle Match</span>
+        <h1 className="text-3xl sm:text-5xl font-bold text-white tracking-tight">
+          Find Your <span className="text-gradient-cyan">Perfect Vehicle Match</span>
         </h1>
         <p className="text-sm text-slate-400">
-          Answer 7 quick lifestyle questions. Our deterministic algorithm scores every car variant on budget, running costs, safety, and priority weights.
+          Answer 7 quick lifestyle questions. Our algorithm evaluates budget, running costs, safety, and priority weights using real dataset specs.
         </p>
       </div>
 
       {/* Progress Bar */}
       {!showResults && (
         <div className="max-w-2xl mx-auto space-y-2">
-          <div className="flex items-center justify-between text-xs text-slate-400 font-mono">
+          <div className="flex items-center justify-between text-xs text-slate-400 font-tech-mono">
             <span>STEP {step} OF 7</span>
             <span>{Math.round((step / 7) * 100)}% COMPLETED</span>
           </div>
-          <div className="h-2 w-full bg-slate-900 rounded-full overflow-hidden border border-slate-800">
+          <div className="h-2 w-full bg-[#080C14] rounded-full overflow-hidden border border-white/10">
             <motion.div
               className="h-full bg-gradient-to-r from-cyan-500 via-blue-500 to-emerald-400"
               initial={{ width: '0%' }}
@@ -136,30 +136,30 @@ export const FinderPage: React.FC = () => {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -20 }}
-          className="max-w-2xl mx-auto glass-panel p-6 sm:p-8 rounded-3xl border border-slate-800 space-y-6"
+          className="max-w-2xl mx-auto card-level-3 p-6 sm:p-8 space-y-6"
         >
           {/* STEP 1: BUDGET */}
           {step === 1 && (
             <div className="space-y-6">
               <div className="flex items-center gap-3">
-                <div className="p-3 rounded-2xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
+                <div className="p-3 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
                   <DollarSign className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-extrabold text-white">Target On-Road Budget</h3>
+                  <h3 className="text-xl font-bold text-white">Target On-Road Budget</h3>
                   <p className="text-xs text-slate-400">What is your maximum target budget for your new car?</p>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 font-tech-mono">
                 {[8, 12, 15, 20, 25, 30].map(b => (
                   <button
                     key={b}
                     onClick={() => setProfileState({ ...profile, budgetLakhs: b })}
-                    className={`p-4 rounded-2xl text-center border font-bold transition-all ${
+                    className={`p-4 rounded-xl text-center border font-bold transition-all ${
                       profile.budgetLakhs === b
                         ? 'bg-cyan-500 text-slate-950 border-cyan-400 shadow-lg shadow-cyan-500/20'
-                        : 'bg-slate-950/60 border-slate-800 text-slate-200 hover:border-slate-700'
+                        : 'bg-[#080C14] border-white/10 text-slate-200 hover:border-white/20'
                     }`}
                   >
                     ₹{b} Lakhs
@@ -168,8 +168,8 @@ export const FinderPage: React.FC = () => {
               </div>
 
               {/* Custom Budget Slider */}
-              <div className="pt-4 border-t border-slate-800 space-y-2">
-                <div className="flex items-center justify-between text-xs text-slate-300 font-mono">
+              <div className="pt-4 border-t border-white/10 space-y-2 font-tech-mono">
+                <div className="flex items-center justify-between text-xs text-slate-300">
                   <span>Custom Budget:</span>
                   <span className="text-cyan-400 font-bold text-sm">₹{profile.budgetLakhs} Lakhs</span>
                 </div>
@@ -190,11 +190,11 @@ export const FinderPage: React.FC = () => {
           {step === 2 && (
             <div className="space-y-6">
               <div className="flex items-center gap-3">
-                <div className="p-3 rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                <div className="p-3 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
                   <Fuel className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-extrabold text-white">Fuel Preference</h3>
+                  <h3 className="text-xl font-bold text-white">Fuel Preference</h3>
                   <p className="text-xs text-slate-400">Select your preferred fuel type or powertrain.</p>
                 </div>
               </div>
@@ -204,10 +204,10 @@ export const FinderPage: React.FC = () => {
                   <button
                     key={f}
                     onClick={() => setProfileState({ ...profile, fuelPreference: f })}
-                    className={`p-4 rounded-2xl text-center border font-bold transition-all ${
+                    className={`p-4 rounded-xl text-center border font-bold transition-all ${
                       profile.fuelPreference === f
                         ? 'bg-emerald-500 text-slate-950 border-emerald-400 shadow-lg shadow-emerald-500/20'
-                        : 'bg-slate-950/60 border-slate-800 text-slate-200 hover:border-slate-700'
+                        : 'bg-[#080C14] border-white/10 text-slate-200 hover:border-white/20'
                     }`}
                   >
                     {f}
@@ -221,11 +221,11 @@ export const FinderPage: React.FC = () => {
           {step === 3 && (
             <div className="space-y-6">
               <div className="flex items-center gap-3">
-                <div className="p-3 rounded-2xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/30">
+                <div className="p-3 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/30">
                   <Gauge className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-extrabold text-white">Transmission Preference</h3>
+                  <h3 className="text-xl font-bold text-white">Transmission Preference</h3>
                   <p className="text-xs text-slate-400">Do you prefer manual gear-shifting or stress-free automatic?</p>
                 </div>
               </div>
@@ -235,10 +235,10 @@ export const FinderPage: React.FC = () => {
                   <button
                     key={t}
                     onClick={() => setProfileState({ ...profile, transmissionPreference: t })}
-                    className={`p-4 rounded-2xl text-center border font-bold transition-all ${
+                    className={`p-4 rounded-xl text-center border font-bold transition-all ${
                       profile.transmissionPreference === t
                         ? 'bg-indigo-500 text-white border-indigo-400 shadow-lg shadow-indigo-500/20'
-                        : 'bg-slate-950/60 border-slate-800 text-slate-200 hover:border-slate-700'
+                        : 'bg-[#080C14] border-white/10 text-slate-200 hover:border-white/20'
                     }`}
                   >
                     {t}
@@ -252,18 +252,18 @@ export const FinderPage: React.FC = () => {
           {step === 4 && (
             <div className="space-y-6">
               <div className="flex items-center gap-3">
-                <div className="p-3 rounded-2xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
+                <div className="p-3 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
                   <Navigation className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-extrabold text-white">City vs Highway Usage Split</h3>
+                  <h3 className="text-xl font-bold text-white">City vs Highway Usage Split</h3>
                   <p className="text-xs text-slate-400">Adjust the sliders to reflect your expected driving environment.</p>
                 </div>
               </div>
 
-              <div className="space-y-6 bg-slate-950/60 p-6 rounded-2xl border border-slate-800">
-                <div className="space-y-2">
-                  <div className="flex justify-between text-xs text-slate-300 font-mono">
+              <div className="space-y-6 bg-[#080C14] p-6 rounded-xl border border-white/10">
+                <div className="space-y-2 font-tech-mono">
+                  <div className="flex justify-between text-xs text-slate-300">
                     <span>City Traffic Commute:</span>
                     <span className="text-cyan-400 font-bold">{profile.cityPercentage}%</span>
                   </div>
@@ -278,8 +278,8 @@ export const FinderPage: React.FC = () => {
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <div className="flex justify-between text-xs text-slate-300 font-mono">
+                <div className="space-y-2 font-tech-mono">
+                  <div className="flex justify-between text-xs text-slate-300">
                     <span>Highway Road Trips:</span>
                     <span className="text-emerald-400 font-bold">{profile.highwayPercentage}%</span>
                   </div>
@@ -301,24 +301,24 @@ export const FinderPage: React.FC = () => {
           {step === 5 && (
             <div className="space-y-6">
               <div className="flex items-center gap-3">
-                <div className="p-3 rounded-2xl bg-amber-500/10 text-amber-400 border border-amber-500/30">
+                <div className="p-3 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/30">
                   <Navigation className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-extrabold text-white">Monthly Driving Distance</h3>
+                  <h3 className="text-xl font-bold text-white">Monthly Driving Distance</h3>
                   <p className="text-xs text-slate-400">How many kilometres do you expect to drive per month?</p>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 font-tech-mono">
                 {[500, 1000, 1500, 2000, 3000].map(km => (
                   <button
                     key={km}
                     onClick={() => setProfileState({ ...profile, monthlyKm: km })}
-                    className={`p-4 rounded-2xl text-center border font-bold transition-all ${
+                    className={`p-4 rounded-xl text-center border font-bold transition-all ${
                       profile.monthlyKm === km
                         ? 'bg-amber-500 text-slate-950 border-amber-400 shadow-lg shadow-amber-500/20'
-                        : 'bg-slate-950/60 border-slate-800 text-slate-200 hover:border-slate-700'
+                        : 'bg-[#080C14] border-white/10 text-slate-200 hover:border-white/20'
                     }`}
                   >
                     {km} km / month
@@ -327,8 +327,8 @@ export const FinderPage: React.FC = () => {
               </div>
 
               {/* Custom KM Slider */}
-              <div className="pt-4 border-t border-slate-800 space-y-2">
-                <div className="flex items-center justify-between text-xs text-slate-300 font-mono">
+              <div className="pt-4 border-t border-white/10 space-y-2 font-tech-mono">
+                <div className="flex items-center justify-between text-xs text-slate-300">
                   <span>Custom Distance:</span>
                   <span className="text-amber-400 font-bold text-sm">{profile.monthlyKm} km/mo</span>
                 </div>
@@ -345,15 +345,15 @@ export const FinderPage: React.FC = () => {
             </div>
           )}
 
-          {/* STEP 6: FAMILY & BOOT */}
+          {/* STEP 6: FAMILY SIZE & BOOT */}
           {step === 6 && (
             <div className="space-y-6">
               <div className="flex items-center gap-3">
-                <div className="p-3 rounded-2xl bg-purple-500/10 text-purple-400 border border-purple-500/30">
+                <div className="p-3 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/30">
                   <Users className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-extrabold text-white">Family Size & Boot Capacity</h3>
+                  <h3 className="text-xl font-bold text-white">Family Size & Boot Capacity</h3>
                   <p className="text-xs text-slate-400">How many family members travel together and how much luggage room is required?</p>
                 </div>
               </div>
@@ -361,9 +361,9 @@ export const FinderPage: React.FC = () => {
               {/* Family Size */}
               <div className="space-y-2">
                 <label className="text-xs font-bold text-slate-300 uppercase tracking-wider block">
-                  Family Size:
+                  Family Seating Requirement:
                 </label>
-                <div className="grid grid-cols-4 gap-3">
+                <div className="grid grid-cols-4 gap-3 font-tech-mono">
                   {[2, 4, 5, 7].map(num => (
                     <button
                       key={num}
@@ -371,7 +371,7 @@ export const FinderPage: React.FC = () => {
                       className={`p-3 rounded-xl border text-center font-bold transition-all ${
                         profile.familySize === num
                           ? 'bg-purple-500 text-white border-purple-400'
-                          : 'bg-slate-950/60 border-slate-800 text-slate-200'
+                          : 'bg-[#080C14] border-white/10 text-slate-200'
                       }`}
                     >
                       {num === 7 ? '6 – 7' : num === 2 ? '1 – 2' : num === 4 ? '3 – 4' : '5'} Persons
@@ -383,7 +383,7 @@ export const FinderPage: React.FC = () => {
               {/* Boot Requirement */}
               <div className="space-y-2">
                 <label className="text-xs font-bold text-slate-300 uppercase tracking-wider block">
-                  Boot Space Requirement:
+                  Boot Luggage Capacity:
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {(['Small', 'Medium', 'Large', 'Very Large'] as BootRequirement[]).map(b => (
@@ -393,7 +393,7 @@ export const FinderPage: React.FC = () => {
                       className={`p-3 rounded-xl border text-center font-bold text-xs transition-all ${
                         profile.bootRequirement === b
                           ? 'bg-purple-500 text-white border-purple-400'
-                          : 'bg-slate-950/60 border-slate-800 text-slate-200'
+                          : 'bg-[#080C14] border-white/10 text-slate-200'
                       }`}
                     >
                       {b}
@@ -408,11 +408,11 @@ export const FinderPage: React.FC = () => {
           {step === 7 && (
             <div className="space-y-6">
               <div className="flex items-center gap-3">
-                <div className="p-3 rounded-2xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
+                <div className="p-3 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
                   <Award className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-extrabold text-white">Rank Your Priorities</h3>
+                  <h3 className="text-xl font-bold text-white">Rank Your Priorities</h3>
                   <p className="text-xs text-slate-400">Order your priorities from top (#1) to lowest. Highest priorities receive maximum weight in the matching score.</p>
                 </div>
               </div>
@@ -421,10 +421,10 @@ export const FinderPage: React.FC = () => {
                 {profile.priorities.map((item, idx) => (
                   <div
                     key={item}
-                    className="flex items-center justify-between p-3 rounded-xl bg-slate-950/80 border border-slate-800 hover:border-cyan-500/40 text-xs transition-colors"
+                    className="flex items-center justify-between p-3 rounded-xl bg-[#080C14] border border-white/10 hover:border-cyan-500/40 text-xs transition-colors"
                   >
                     <div className="flex items-center gap-3">
-                      <span className={`w-6 h-6 rounded-full flex items-center justify-center font-extrabold font-mono text-xs ${
+                      <span className={`w-6 h-6 rounded-md flex items-center justify-center font-bold font-tech-mono text-xs ${
                         idx === 0 ? 'bg-emerald-500 text-slate-950' : idx === 1 ? 'bg-cyan-500 text-slate-950' : 'bg-slate-800 text-slate-300'
                       }`}>
                         #{idx + 1}
@@ -455,11 +455,11 @@ export const FinderPage: React.FC = () => {
           )}
 
           {/* Navigation Controls */}
-          <div className="flex items-center justify-between pt-6 border-t border-slate-800">
+          <div className="flex items-center justify-between pt-6 border-t border-white/10">
             {step > 1 ? (
               <button
                 onClick={() => setStep(step - 1)}
-                className="px-4 py-2.5 rounded-xl text-xs font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800 hover:border-slate-700 flex items-center gap-2"
+                className="btn-driveiq btn-driveiq-secondary text-xs flex items-center gap-2"
               >
                 <ArrowLeft className="w-4 h-4" /> Back
               </button>
@@ -468,7 +468,7 @@ export const FinderPage: React.FC = () => {
             {step < 7 ? (
               <button
                 onClick={() => setStep(step + 1)}
-                className="px-6 py-2.5 rounded-xl text-xs font-bold text-slate-950 bg-cyan-400 hover:bg-cyan-300 transition-all flex items-center gap-2 shadow-lg shadow-cyan-500/20"
+                className="btn-driveiq btn-driveiq-primary text-xs flex items-center gap-2"
               >
                 Next Step <ArrowRight className="w-4 h-4" />
               </button>
@@ -476,17 +476,17 @@ export const FinderPage: React.FC = () => {
               <button
                 onClick={handleRunAnalysis}
                 disabled={isAnalyzing}
-                className="px-8 py-3 rounded-xl text-xs font-extrabold text-slate-950 bg-gradient-to-r from-emerald-400 to-cyan-400 hover:brightness-110 transition-all flex items-center gap-2 shadow-xl shadow-cyan-500/30"
+                className="btn-driveiq btn-driveiq-primary text-xs flex items-center gap-2"
               >
                 {isAnalyzing ? (
                   <>
                     <RefreshCw className="w-4 h-4 animate-spin" />
-                    Calculating Vehicle Fit Scores...
+                    Evaluating Match Algorithm...
                   </>
                 ) : (
                   <>
                     <Sparkles className="w-4 h-4" />
-                    Analyze & Generate Top Matches →
+                    Analyze & Generate Shortlist →
                   </>
                 )}
               </button>
@@ -495,21 +495,30 @@ export const FinderPage: React.FC = () => {
         </motion.div>
       )}
 
-      {/* RESULTS DISPLAY AREA */}
-      {showResults && (
+      {/* RESULTS DISPLAY AREA (YOUR DRIVEIQ SHORTLIST) */}
+      {isAnalyzing && (
+        <div className="max-w-7xl mx-auto space-y-6">
+          <div className="h-8 w-64 bg-slate-900 rounded-lg animate-pulse" />
+          <div className="grid grid-cols-1 gap-6">
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+          </div>
+        </div>
+      )}
+
+      {showResults && !isAnalyzing && (
         <div className="space-y-8 animate-fade-in">
           
-          {/* Active Profile Summary Banner */}
-          <div className="glass-panel p-6 rounded-3xl border border-cyan-500/30 bg-slate-950/80 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
             <div>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 font-mono">
-                Active User Profile Context
+              <span className="text-xs font-bold uppercase tracking-widest text-cyan-400 font-tech-mono">
+                MATCHED RECOMMENDATIONS
               </span>
-              <h3 className="text-xl font-black text-white mt-1">
-                ₹{profile.budgetLakhs}L Budget • {profile.fuelPreference} • {profile.transmissionPreference}
-              </h3>
+              <h2 className="text-3xl font-black text-white">YOUR DRIVEIQ SHORTLIST</h2>
               <p className="text-xs text-slate-400">
-                {profile.monthlyKm} km/mo ({profile.cityPercentage}% City) • Family of {profile.familySize} • Top Priority: {profile.priorities[0]}
+                Top vehicles calculated specifically for your budget (₹{profile.budgetLakhs}L), fuel, usage, and priorities.
               </p>
             </div>
             <button
@@ -517,19 +526,14 @@ export const FinderPage: React.FC = () => {
                 setShowResults(false);
                 setStep(1);
               }}
-              className="px-4 py-2 rounded-xl text-xs font-bold text-cyan-300 bg-cyan-950/80 border border-cyan-500/40 hover:bg-cyan-900/60 flex items-center gap-2 shrink-0"
+              className="btn-driveiq btn-driveiq-secondary text-xs flex items-center gap-2 shrink-0"
             >
               <Sliders className="w-4 h-4" /> Edit Answers & Re-Analyze
             </button>
           </div>
 
-          {/* Top 5 Recommendation Cards */}
+          {/* Top Recommendation Cards */}
           <div className="space-y-6">
-            <h2 className="text-2xl font-black text-white flex items-center gap-2">
-              <Sparkles className="w-6 h-6 text-emerald-400" />
-              Your Top Vehicle Matches
-            </h2>
-
             {topMatches.map((result, idx) => (
               <RecommendationCard
                 key={result.vehicle.id}
