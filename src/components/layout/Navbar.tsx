@@ -45,21 +45,21 @@ export const Navbar: React.FC = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full backdrop-blur-xl bg-slate-950/80 border-b border-slate-800/60 transition-colors">
+    <header className="sticky top-0 z-40 w-full backdrop-blur-xl bg-[#05070D]/85 border-b border-white/10 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
         
         {/* Brand Logo */}
         <Link to="/" className="flex items-center gap-2 group shrink-0">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-blue-600 to-indigo-600 p-[1px] shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform">
-            <div className="w-full h-full bg-slate-950 rounded-[11px] flex items-center justify-center">
-              <Zap className="w-5 h-5 text-cyan-400 fill-cyan-400/20" />
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 via-blue-600 to-indigo-600 p-[1px] shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform">
+            <div className="w-full h-full bg-[#05070D] rounded-[11px] flex items-center justify-center">
+              <Zap className="w-4 h-4 text-cyan-400 fill-cyan-400/20" />
             </div>
           </div>
           <div>
-            <span className="text-xl font-black tracking-wider text-white font-mono">
+            <span className="text-lg font-black tracking-wider text-white font-mono">
               DRIVE<span className="text-cyan-400">IQ</span>
             </span>
-            <span className="hidden sm:block text-[9px] font-semibold text-slate-400 tracking-widest uppercase">
+            <span className="hidden sm:block text-[8px] font-semibold text-slate-400 tracking-widest uppercase">
               Automotive Intelligence OS
             </span>
           </div>
@@ -80,13 +80,13 @@ export const Navbar: React.FC = () => {
                     ? 'text-cyan-400 bg-cyan-500/10 border border-cyan-500/30'
                     : link.highlight
                     ? 'text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 hover:bg-emerald-500/20'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-800/50'
+                    : 'text-slate-300 hover:text-white hover:bg-white/5'
                 }`}
               >
                 <Icon className="w-3.5 h-3.5" />
                 <span>{link.label}</span>
                 {link.badge !== undefined && link.badge > 0 && (
-                  <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-cyan-500 text-slate-950">
+                  <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold font-tech-mono bg-cyan-500 text-slate-950">
                     {link.badge}
                   </span>
                 )}
@@ -100,12 +100,12 @@ export const Navbar: React.FC = () => {
           {/* Cmd+K Search Button */}
           <button
             onClick={() => setIsSearchOpen(true)}
-            className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 bg-slate-900 border border-slate-800 hover:border-slate-700 hover:text-slate-200 transition-all"
+            className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 bg-[#080C14] border border-white/10 hover:border-white/20 hover:text-slate-200 transition-all"
             title="Global Search (Cmd + K)"
           >
             <Search className="w-3.5 h-3.5 text-slate-400" />
             <span className="hidden lg:inline">Search cars, tools...</span>
-            <kbd className="hidden lg:inline-block px-1.5 py-0.5 text-[10px] font-mono bg-slate-800 text-slate-400 rounded">
+            <kbd className="hidden lg:inline-block px-1.5 py-0.5 text-[10px] font-tech-mono bg-slate-900 text-slate-400 rounded border border-white/10">
               ⌘K
             </kbd>
           </button>
@@ -122,7 +122,7 @@ export const Navbar: React.FC = () => {
           {/* Theme Switcher */}
           <button
             onClick={toggleTheme}
-            className="p-2 rounded-lg text-slate-400 hover:text-white bg-slate-900 border border-slate-800 hover:border-slate-700 transition-all"
+            className="p-2 rounded-lg text-slate-400 hover:text-white bg-[#080C14] border border-white/10 hover:border-white/20 transition-all"
             title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
           >
             {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-cyan-400" />}
@@ -131,7 +131,7 @@ export const Navbar: React.FC = () => {
           {/* User / Garage Link */}
           <Link
             to="/garage"
-            className="p-2 rounded-lg text-slate-300 hover:text-white bg-slate-900 border border-slate-800 hover:border-slate-700 transition-all"
+            className="p-2 rounded-lg text-slate-300 hover:text-white bg-[#080C14] border border-white/10 hover:border-white/20 transition-all"
             title="My Garage Dashboard"
           >
             <User className="w-4 h-4" />
